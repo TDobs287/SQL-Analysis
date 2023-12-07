@@ -117,7 +117,7 @@ HAVING DATEDIFF(DAY, MAX(CAST(CAST(ProductsFirstOrderDate AS CHAR) AS DATE)), MA
 
 -- 5. Show all sales on promotion and add a column showing their new sales value if 25% discount is applied.
 
-SELECT T1.OrderDate, T3.SalesReasonName, T1.SalesOrderNumber, ROUND(T1.SalesAmount, 2), CONVERT(DECIMAL(10,2), ROUND(T1.SalesAmount * 0.75, 2)) AS SalesAmountDiscount
+SELECT T1.OrderDate, T3.SalesReasonName, T1.SalesOrderNumber, ROUND(T1.SalesAmount, 2) AS SalesAmount, CONVERT(DECIMAL(10,2), ROUND(T1.SalesAmount * 0.75, 2)) AS SalesAmountDiscount
 FROM AdventureWorksDW2019.dbo.FactInternetSales T1
 JOIN AdventureWorksDW2019.dbo.FactInternetSalesReason T2
 ON T1.SalesOrderNumber = T2.SalesOrderNumber
