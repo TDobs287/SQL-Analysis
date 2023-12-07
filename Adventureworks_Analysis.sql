@@ -115,7 +115,7 @@ HAVING DATEDIFF(DAY, MAX(CAST(CAST(ProductsFirstOrderDate AS CHAR) AS DATE)), MA
 
 
 
--- 5. Show all sales on promotion and add a column showing their new sales value if 25% discount is applied.
+-- 5. Show all sales on promotion FOR 2012 and add a column showing their new sales value if 25% discount is applied.
 
 SELECT T1.OrderDate, T3.SalesReasonName, T1.SalesOrderNumber, ROUND(T1.SalesAmount, 2) AS SalesAmount, CONVERT(DECIMAL(10,2), ROUND(T1.SalesAmount * 0.75, 2)) AS SalesAmountDiscount
 FROM AdventureWorksDW2019.dbo.FactInternetSales T1
@@ -124,11 +124,13 @@ ON T1.SalesOrderNumber = T2.SalesOrderNumber
 JOIN AdventureWorksDW2019.dbo.DimSalesReason T3
 ON T2.SalesReasonKey = T3.SalesReasonKey
 WHERE SalesReasonName = 'On Promotion'
+AND SUBSTRING(CAST(T1.OrderDate AS CHAR), 8, 4) = '2012'
+ORDER BY T1.OrderDate ASC
 
 
 
 
--- 6. Show each customer key, the sales value of their first sale, and the sales value of their last sale including the difference between the two.
+-- 6. Show the first 15 customer keys, the sales value of their first sale, and the sales value of their last sale including the difference between the two.
 
 WITH CTE_6_FirstPurchase AS (
 	SELECT CustomerKey, SalesAmount, OrderDate, ROW_NUMBER() OVER (PARTITION BY CustomerKey ORDER BY OrderDate ASC)	AS SalesNumber
@@ -140,7 +142,7 @@ CTE_6_LastPurchase AS (
 	FROM AdventureWorksDW2019.dbo.FactInternetSales
 	)
 
-SELECT CustomerKey, MAX(FirstPurchaseValue) AS FirstPurchaseValue, MAX(LastPurchaseValue) AS LastPurchaseValue, ABS(MAX(LastPurchaseValue) - MAX(FirstPurchaseValue)) AS PurchaseDiff
+SELECT TOP 15 CustomerKey, MAX(FirstPurchaseValue) AS FirstPurchaseValue, MAX(LastPurchaseValue) AS LastPurchaseValue, ABS(MAX(LastPurchaseValue) - MAX(FirstPurchaseValue)) AS PurchaseDiff
 FROM (SELECT CustomerKey, SalesAmount AS FirstPurchaseValue, NULL AS LastPurchaseValue
 		FROM CTE_6_FirstPurchase
 		WHERE SalesNumber = 1		
