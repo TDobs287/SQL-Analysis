@@ -117,7 +117,7 @@ HAVING DATEDIFF(DAY, MAX(CAST(CAST(ProductsFirstOrderDate AS CHAR) AS DATE)), MA
 
 -- 5. Show all sales on promotion and add a column showing their new sales value if 25% discount is applied.
 
-SELECT T1.OrderDate, T3.SalesReasonName, T1.SalesOrderNumber, ROUND(T1.SalesAmount, 2), CONVERT(DECIMAL(10,2), ROUND(T1.SalesAmount * 0.75, 2)) AS SalesAmountDiscount		-- The #10 for DECIMAL represents the precision amount, meaning that the DECIMAL data type can store numbers with up to 10 total digits, and 2 of those digits can be to the right of the decimal point. 
+SELECT T1.OrderDate, T3.SalesReasonName, T1.SalesOrderNumber, ROUND(T1.SalesAmount, 2), CONVERT(DECIMAL(10,2), ROUND(T1.SalesAmount * 0.75, 2)) AS SalesAmountDiscount
 FROM AdventureWorksDW2019.dbo.FactInternetSales T1
 JOIN AdventureWorksDW2019.dbo.FactInternetSalesReason T2
 ON T1.SalesOrderNumber = T2.SalesOrderNumber
@@ -131,7 +131,7 @@ WHERE SalesReasonName = 'On Promotion'
 -- 6. Show each customer key, the sales value of their first sale, and the sales value of their last sale including the difference between the two.
 
 WITH CTE_6_FirstPurchase AS (
-	SELECT CustomerKey, SalesAmount, OrderDate, ROW_NUMBER() OVER (PARTITION BY CustomerKey ORDER BY OrderDate ASC)	AS SalesNumber	-- This is how you would number each individual sale per customer based on order date.
+	SELECT CustomerKey, SalesAmount, OrderDate, ROW_NUMBER() OVER (PARTITION BY CustomerKey ORDER BY OrderDate ASC)	AS SalesNumber
 	FROM AdventureWorksDW2019.dbo.FactInternetSales
 	),
 
