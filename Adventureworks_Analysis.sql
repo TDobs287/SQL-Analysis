@@ -33,7 +33,7 @@ ORDER BY EnglishCountryRegionName, Age_Group
 
 
 
--- 2. Show each Product sales by age group
+-- 2. Show each product's sales by age group.
 
 WITH CTE_2 AS (
 	SELECT T2.SalesOrderNumber, DATEDIFF(MONTH, T3.BirthDate, T2.OrderDate)/12 AS Age, T4.EnglishProductSubcategoryName
@@ -69,7 +69,7 @@ ORDER BY EnglishProductSubcategoryName, Age_Group
 
 
 
--- 3. Show monthly sales for Australia and USA compared for the year 2012
+-- 3. Show monthly sales for Australia and USA compared for the year 2012.
 
 SELECT T1.SalesOrderNumber, T1.OrderDate, T2.SalesTerritoryCountry
 FROM AdventureWorksDW2019.dbo.FactInternetSales T1
@@ -81,7 +81,7 @@ AND SUBSTRING(CAST(T1.OrderDate AS CHAR), 8, 4) = '2012'
 
 
 
--- 4. Display each products first reorder date, then add a column to show the days between the products first order and first re-order date. Show products which took over one year to need to be reordered.
+-- 4. Display each product's first reorder date, then add a column to show the days between the products first order and first re-order date. Show products which took over one year to need to be reordered.
 
 WITH CTE_4 AS (
 	SELECT T1.EnglishProductName, T1.SafetyStockLevel, T1.ReorderPoint, T2.OrderDateKey, SUM(T2.OrderQuantity) AS Sales
@@ -115,7 +115,7 @@ HAVING DATEDIFF(DAY, MAX(CAST(CAST(ProductsFirstOrderDate AS CHAR) AS DATE)), MA
 
 
 
--- 5. Show all sales on promotion FOR 2012 and add a column showing their new sales value if 25% discount is applied.
+-- 5. Show all sales on promotion for 2012 and add a column showing their new sales value if 25% discount is applied.
 
 SELECT T1.OrderDate, T3.SalesReasonName, T1.SalesOrderNumber, ROUND(T1.SalesAmount, 2) AS SalesAmount, CONVERT(DECIMAL(10,2), ROUND(T1.SalesAmount * 0.75, 2)) AS SalesAmountDiscount
 FROM AdventureWorksDW2019.dbo.FactInternetSales T1
