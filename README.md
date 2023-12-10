@@ -1,6 +1,6 @@
 # Adventureworks Analysis
 ### Below are the following tables and graphs that accompany the SQL queries located in the .sql file
-#### This information is based on the Adventureworks dataset between the years 2010 and 2014
+#### This information is based on the Adventureworks dataset between 2010 and 2014
 
 
 #### 1. Show each country's sales by customer age group.
